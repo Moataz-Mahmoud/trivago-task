@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "2621d97f-5131-462d-b2c0-b9d84c5173ae",
+		"name": "trivago_task",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/v1/public/series",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "495764f7-e026-4ac9-8862-bf5f986d0fee",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 409 when missed API key\", function () {",
+							"    pm.response.to.have.status(409);",
+							"    pm.expect(jsonData.message).to.eq('You must provide a user key.');",
+							"});",
+							"",
+							"pm.test(\"Status code is 409 when missed hash\", function () {",
+							"    pm.response.to.have.status(409);",
+							"     pm.expect(jsonData.message).to.eq('You must provide a hash.');",
+							"});",
+							"",
+							"pm.test(\"Status code is 409 when missed timestamp\", function () {",
+							"    pm.response.to.have.status(409);",
+							"     pm.expect(jsonData.message).to.eq('You must provide a timestamp.');",
+							"});",
+							"",
+							"pm.test(\"Status code is 401 when invalid referrer\", function () {",
+							"    pm.response.to.have.status(401);",
+							"    pm.expect(jsonData.message).to.eq('You must provide a user key.');",
+							"});",
+							"",
+							"pm.test(\"Status code is 401 when invalid hash\", function () {",
+							"    pm.response.to.have.status(401);",
+							"     pm.expect(jsonData.message).to.eq('That hash, timestamp and key combination is invalid.');",
+							"});",
+							"",
+							"pm.test(\"Status code is 405 when method not allowed\", function () {",
+							"    pm.response.to.have.status(405);",
+							"     pm.expect(jsonData.code).to.eq('MethodNotAllowedError');",
+							"});",
+							"",
+							"pm.test(\"Status code is 403 when action is forbidden\", function () {",
+							"    pm.response.to.have.status(403);",
+							"    pm.expect(jsonData.message).to.eq('You must provide a user key.');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://gateway.marvel.com/v1/public/series?ts=1&apikey=10194e846a946fc251ad5bd6c38910ae&hash=e80b12bee9d3cb3ae53f8ad5183d6ed7",
+					"protocol": "http",
+					"host": [
+						"gateway",
+						"marvel",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"series"
+					],
+					"query": [
+						{
+							"key": "ts",
+							"value": "1"
+						},
+						{
+							"key": "apikey",
+							"value": "10194e846a946fc251ad5bd6c38910ae"
+						},
+						{
+							"key": "hash",
+							"value": "e80b12bee9d3cb3ae53f8ad5183d6ed7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/public/comics/27649",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb7ec821-6cac-4922-9378-9decbdc4327e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response payload matches the Comic type definition\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"code\");",
+							"    pm.expect(pm.response.text()).to.include(\"status\");",
+							"    pm.expect(pm.response.text()).to.include(\"copyright\");",
+							"    pm.expect(pm.response.text()).to.include(\"attributionText\");",
+							"    pm.expect(pm.response.text()).to.include(\"attributionHTML\");",
+							"    pm.expect(pm.response.text()).to.include(\"etag\");",
+							"    pm.expect(pm.response.text()).to.include(\"data\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://gateway.marvel.com/v1/public/comics/27649?ts=1&apikey=10194e846a946fc251ad5bd6c38910ae&hash=e80b12bee9d3cb3ae53f8ad5183d6ed7",
+					"protocol": "http",
+					"host": [
+						"gateway",
+						"marvel",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"comics",
+						"27649"
+					],
+					"query": [
+						{
+							"key": "ts",
+							"value": "1"
+						},
+						{
+							"key": "apikey",
+							"value": "10194e846a946fc251ad5bd6c38910ae"
+						},
+						{
+							"key": "hash",
+							"value": "e80b12bee9d3cb3ae53f8ad5183d6ed7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/public/characters/1011010 ",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b8030058-2704-4bb7-b09b-7e0811416cb0",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ea59aadc-526b-4ab5-8357-6236c50e265f",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test(\"the name of this character is Spider-Man (Ultimate)\", function () {",
+							"    pm.expect(jsonData.data.results[0].name).to.eq('Spider-Man (Ultimate)');",
+							"});",
+							"",
+							"pm.test(\"the last modification was later than January 2014\", function () {",
+							"    //Extract the modification year and month",
+							"    let tempDate = jsonData.data.results[0].modified;",
+							"    let modifiedDate = tempDate.substr(0, tempDate.length - 17);",
+							"    let modifiedYear = modifiedDate.substr(0, 4)",
+							"    let modifiedMonth = modifiedDate.substr(5, 2)",
+							"    let pass = 'False'",
+							"    ",
+							"    if(modifiedYear > '2014'){pass = 'True'}",
+							"    ",
+							"    else if(modifiedYear == '2014'){",
+							"        if(modifiedMonth > 1)",
+							"        {",
+							"            pass = 'True'",
+							"        }",
+							"    }",
+							"    ",
+							"    pm.expect(pass).to.eq('True');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://gateway.marvel.com/v1/public/characters/1011010?ts=1&apikey=10194e846a946fc251ad5bd6c38910ae&hash=e80b12bee9d3cb3ae53f8ad5183d6ed7",
+					"protocol": "http",
+					"host": [
+						"gateway",
+						"marvel",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"characters",
+						"1011010"
+					],
+					"query": [
+						{
+							"key": "ts",
+							"value": "1"
+						},
+						{
+							"key": "apikey",
+							"value": "10194e846a946fc251ad5bd6c38910ae"
+						},
+						{
+							"key": "hash",
+							"value": "e80b12bee9d3cb3ae53f8ad5183d6ed7"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/v1/public/characters/1011010xxxxxx",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2f999188-67d2-43c4-8cd8-1b83984e5547",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b00d9853-3a59-48fe-a5ff-a77635920e28",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://gateway.marvel.com/v1/public/characters/1011010xxxxxx?ts=1&apikey=10194e846a946fc251ad5bd6c38910ae&hash=e80b12bee9d3cb3ae53f8ad5183d6ed7",
+					"protocol": "http",
+					"host": [
+						"gateway",
+						"marvel",
+						"com"
+					],
+					"path": [
+						"v1",
+						"public",
+						"characters",
+						"1011010xxxxxx"
+					],
+					"query": [
+						{
+							"key": "ts",
+							"value": "1"
+						},
+						{
+							"key": "apikey",
+							"value": "10194e846a946fc251ad5bd6c38910ae"
+						},
+						{
+							"key": "hash",
+							"value": "e80b12bee9d3cb3ae53f8ad5183d6ed7"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
