@@ -1,7 +1,7 @@
 exports.config = {
     //seleniumAddress: 'http://localhost:4444/wd/hub', 
     specs: ['./specs/purchaseTest.js'],
-    useAllAngular2AppRoots: true,
+    directConnect: true,
     params: {
         homepage: {
             searchItem: 'LUNDHAGS'
