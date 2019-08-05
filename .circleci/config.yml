@@ -9,4 +9,4 @@ jobs:
       - run: sudo npm install -g protractor
       - run: sudo webdriver-manager update
       - run: sudo webdriver-manager start
-      - run: protractor ../trivago_e2e/config.js
+      - run: protractor ~/trivago_e2e/config.js
