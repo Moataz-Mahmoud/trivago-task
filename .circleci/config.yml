@@ -1,0 +1,12 @@
+version: 2
+jobs: 
+  build:
+    docker:
+      - image: circleci/node:7
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm install -g protractor
+      - run: webdriver-manager update
+      - run: webdriver-manager start
+      - run: protractor ../trivago_e2e/config.js
