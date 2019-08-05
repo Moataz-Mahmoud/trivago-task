@@ -6,11 +6,13 @@ describe('here are the purchase test cases: ', ()=> {
     //Change the defaul timeout from 10 seconds to 2 minutes.
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 120000;
 
-    it('add to chart', async () => {
+    beforeEach(async () => {
         browser.driver.manage().window().maximize();
         browser.waitForAngularEnabled(false);
         await browser.get('https://www.bergfreunde.eu/')
-        
+    })
+
+    it('add to chart', async () => {
         //search for a product and open its page
         await homePage.setSearchCriteria()
         await homePage.openItemPage()

@@ -1,6 +1,8 @@
-version: 2
+version: 2.1
+orbs:
+  newman: postman/newman@0.0.2
 jobs: 
-  build:
+  e2e:
     docker:
       - image: circleci/node:7
     steps:
@@ -10,3 +12,16 @@ jobs:
       - run: sudo webdriver-manager update
       - run: sudo webdriver-manager start --standalone
       - run: npm run test
+
+  newman-collection-run:
+    executor: newman/postman-newman-docker
+    steps:
+      - checkout
+      - newman/newman-run:
+          collection: ./trivago_postman_collection/collection.json
+workflows:
+  version: 2
+  trivago-task:
+    jobs:
+      - e2e
+      - newman-collection-run
