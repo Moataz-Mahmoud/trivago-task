@@ -25,21 +25,19 @@ describe('here are the purchase test cases: ', ()=> {
         expect(await itemPage.getReviews()).not.toEqual('0')
         var productTitle = itemPage.getProductTitle()
         var productPrice
-        var totalPrice
-        productPrice = itemPage.getProductPrice().then((price) => {
-            totalPrice = price
+        itemPage.getProductPrice().then((price) => {
+            productPrice = price
         })
 
         //close cookie, then add the item to cart twice, each one with quantity one
         await itemPage.closeCookie()
-        await itemPage.addToCart()
-        await itemPage.backToProduct()
+        itemPage.setQuantity()
         await itemPage.addToCart()
         await itemPage.goToCart()
 
         //make sure that the product title and price are as expected
-        expect(cartPage.getProductTitle()).toEqual(productTitle)
-        expect(await cartPage.getTotalPrice()).toEqual((totalPrice * 2).toString())
+        expect(await cartPage.getProductTitle()).toContain(productTitle)
+        expect(await cartPage.getTotalPrice()).toEqual((productPrice * 2).toString())
         
         //make sure that the sent voucher isn't working
         await cartPage.setVoucher()

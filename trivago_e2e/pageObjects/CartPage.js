@@ -1,11 +1,11 @@
 var CartPage = function() {
-    var productTitle = element(by.xpath('//*[@id="basket"]/form/div[3]/div/div[2]/div/a/span[2]'))
-    var totalPrice = element(by.xpath('//*[@id="basket"]/form/div[3]/div/div[5]/div/div/span[1]'))
+    var productTitle = element.all(by.cssContainingText('.product-title', 'Walking trousers')).get(0)
+    var totalPrice = element(by.css('.totalprice.padding-left.right.font-red'))
     var voucherInput = element(by.name('voucherNr'))
     var redeemButton = element(by.xpath('//*[@id="basket"]/div[3]/div/div[1]/div/form/ul/li[2]/button'))
     var errorMessage = element(by.xpath('//*[@id="error-modal"]/div/p[2]'))
     var closeErrorButton = element(by.css('.close.close-reveal-modal'))
-    var goToCheckoutButton = element(by.xpath('//*[@id="basket"]/div[4]/div/form/button'))
+    var goToCheckoutButton = element.all(by.css('button[type=submit]')).get(1)
 
     this.getProductTitle = () => {
         return productTitle.getText()
@@ -13,6 +13,7 @@ var CartPage = function() {
 
     //remove the euro sign and replace the ',' with '.' in the number format
     this.getTotalPrice = async () => {
+        browser.wait(protractor.ExpectedConditions.presenceOf(totalPrice), 5000)
         var price
         await totalPrice.getText().then((temp) => {
             price = temp
@@ -31,15 +32,18 @@ var CartPage = function() {
     }
 
     this.getErrorMessage = () => {
-        browser.wait(protractor.ExpectedConditions.presenceOf(element(by.id('error-modal'))), 5000)
+        browser.wait(protractor.ExpectedConditions.textToBePresentInElement(
+            errorMessage, 'Reason: This voucher is not valid!'), 5000)
         return errorMessage.getText()
     }
 
     this.closeErrorMessage = async () => {
+        browser.wait(protractor.ExpectedConditions.elementToBeClickable(closeErrorButton))
         await closeErrorButton.click()
     }
 
     this.goToCheckout = async () => {
+        browser.sleep(1000)
         await goToCheckoutButton.click()
     }
 }
